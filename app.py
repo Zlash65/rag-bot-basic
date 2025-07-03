@@ -143,5 +143,11 @@ def main():
   if st.session_state.pdfs_submitted and st.session_state.pdf_files:
     render_uploaded_files()
 
+  for q, a, *_ in st.session_state.chat_history:
+    with st.chat_message("user"):
+      st.markdown(q)
+    with st.chat_message("ai"):
+      st.markdown(a)
+
 if __name__ == "__main__":
   main()
