@@ -31,5 +31,9 @@ def main():
       if model_provider == "Select a model provider":
         return
 
+      api_key = st.text_input("🔑 Enter your API Key", help=f"Get API key from [here]({MODEL_OPTIONS[model_provider]['playground']})")
+      if not api_key:
+        return
+
 if __name__ == "__main__":
   main()
