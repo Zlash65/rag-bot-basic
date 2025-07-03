@@ -153,5 +153,8 @@ def main():
     st.warning("📄 New PDFs uploaded. Please submit before chatting.")
     return
 
+  if st.session_state.pdfs_submitted:
+    question = st.chat_input("💬 Ask a Question from the PDF Files")
+
 if __name__ == "__main__":
   main()
