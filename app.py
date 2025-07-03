@@ -116,5 +116,10 @@ def main():
     with st.expander("🛠️ Tools", expanded=False):
       col1, col2, col3 = st.columns(3)
 
+      if col1.button("🔄 Reset"):
+        st.session_state.clear()
+        st.session_state.model_provider = "Select a model provider"
+        st.rerun()
+
 if __name__ == "__main__":
   main()
