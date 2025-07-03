@@ -38,5 +38,7 @@ def main():
       models = MODEL_OPTIONS[model_provider]["models"]
       model = st.selectbox("🧠 Select a model", models, key="model")
 
+      uploaded_files = st.file_uploader("📚 Upload PDFs", type=["pdf"], accept_multiple_files=True, key="pdf_uploader")
+
 if __name__ == "__main__":
   main()
