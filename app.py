@@ -158,6 +158,12 @@ def main():
     if question:
       with st.chat_message("user"):
         st.markdown(question)
+      with st.chat_message("ai"):
+        with st.spinner("Thinking..."):
+          try:
+            pass
+          except Exception as e:
+            st.error(f"Error: {str(e)}")
   else:
     st.info("📄 Please upload and submit PDFs to start chatting.")
 
