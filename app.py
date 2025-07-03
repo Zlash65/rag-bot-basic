@@ -67,6 +67,7 @@ def main():
   st.caption("Chat with multiple PDFs :books:")
 
   for key, default in {
+    "chat_history": [],
     "pdfs_submitted": False,
     "vector_store": None,
     "pdf_files": [],
@@ -120,6 +121,13 @@ def main():
         st.session_state.clear()
         st.session_state.model_provider = "Select a model provider"
         st.rerun()
+
+      if col2.button("🧹 Clear Chat"):
+        st.session_state.chat_history = []
+        st.session_state.pdf_files = None
+        st.session_state.vector_store = None
+        st.session_state.pdfs_submitted = False
+        st.toast("Chat and PDF cleared.", icon="🧼")
 
 if __name__ == "__main__":
   main()
