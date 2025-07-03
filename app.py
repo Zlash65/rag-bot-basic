@@ -60,6 +60,13 @@ def process_and_store_pdfs(pdfs, provider, api_key):
   st.session_state.vector_store = store
   st.session_state.pdfs_submitted = True
 
+def render_uploaded_files():
+  pdf_files = st.session_state.get("pdf_files", [])
+  if pdf_files:
+    with st.expander("**📎 Uploaded Files:**"):
+      for f in pdf_files:
+        st.markdown(f"- {f.name}")
+
 # ------------------ Main App ------------------ #
 def main():
   st.set_page_config(page_title="RAG PDFBot", layout="centered")
@@ -132,6 +139,9 @@ def main():
       if col3.button("↩️ Undo") and st.session_state.chat_history:
         st.session_state.chat_history.pop()
         st.rerun()
+
+  if st.session_state.pdfs_submitted and st.session_state.pdf_files:
+    render_uploaded_files()
 
 if __name__ == "__main__":
   main()
