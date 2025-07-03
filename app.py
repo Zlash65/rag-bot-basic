@@ -70,6 +70,7 @@ def main():
     "pdfs_submitted": False,
     "vector_store": None,
     "pdf_files": [],
+    "last_provider": None,
     "unsubmitted_files": False,
   }.items():
     if key not in st.session_state:
@@ -104,6 +105,13 @@ def main():
             st.toast("PDFs processed successfully!", icon="✅")
         else:
           st.warning("No files uploaded.")
+
+      if model_provider != st.session_state.last_provider:
+        st.session_state.last_provider = model_provider
+        if st.session_state.pdf_files:
+          with st.spinner("Reprocessing PDFs..."):
+            process_and_store_pdfs(st.session_state.pdf_files, model_provider, api_key)
+            st.toast("PDFs reprocessed successfully!", icon="🔁")
 
 if __name__ == "__main__":
   main()
