@@ -129,5 +129,9 @@ def main():
         st.session_state.pdfs_submitted = False
         st.toast("Chat and PDF cleared.", icon="🧼")
 
+      if col3.button("↩️ Undo") and st.session_state.chat_history:
+        st.session_state.chat_history.pop()
+        st.rerun()
+
 if __name__ == "__main__":
   main()
