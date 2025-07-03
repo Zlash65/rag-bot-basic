@@ -23,6 +23,13 @@ def main():
   st.title("👽 RAG PDFBot")
   st.caption("Chat with multiple PDFs :books:")
 
+  for key, default in {
+    "pdf_files": [],
+    "unsubmitted_files": False,
+  }.items():
+    if key not in st.session_state:
+      st.session_state[key] = default
+
   # Sidebar Configuration
   with st.sidebar:
     with st.expander("⚙️ Configuration", expanded=True):
@@ -39,6 +46,19 @@ def main():
       model = st.selectbox("🧠 Select a model", models, key="model")
 
       uploaded_files = st.file_uploader("📚 Upload PDFs", type=["pdf"], accept_multiple_files=True, key="pdf_uploader")
+
+      if uploaded_files and uploaded_files != st.session_state.pdf_files:
+        st.session_state.unsubmitted_files = True
+
+      if st.button("➡️ Submit"):
+        if uploaded_files:
+          with st.spinner("Processing PDFs..."):
+            # process_and_store_pdfs(uploaded_files, model_provider, api_key)
+            st.session_state.pdf_files = uploaded_files
+            st.session_state.unsubmitted_files = False
+            st.toast("PDFs processed successfully!", icon="✅")
+        else:
+          st.warning("No files uploaded.")
 
 if __name__ == "__main__":
   main()
