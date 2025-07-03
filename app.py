@@ -113,5 +113,8 @@ def main():
             process_and_store_pdfs(st.session_state.pdf_files, model_provider, api_key)
             st.toast("PDFs reprocessed successfully!", icon="🔁")
 
+    with st.expander("🛠️ Tools", expanded=False):
+      col1, col2, col3 = st.columns(3)
+
 if __name__ == "__main__":
   main()
