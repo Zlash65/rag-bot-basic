@@ -35,5 +35,8 @@ def main():
       if not api_key:
         return
 
+      models = MODEL_OPTIONS[model_provider]["models"]
+      model = st.selectbox("🧠 Select a model", models, key="model")
+
 if __name__ == "__main__":
   main()
