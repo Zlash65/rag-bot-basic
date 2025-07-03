@@ -161,7 +161,7 @@ def main():
       with st.chat_message("ai"):
         with st.spinner("Thinking..."):
           try:
-            pass
+            docs = st.session_state.vector_store.similarity_search(question)
           except Exception as e:
             st.error(f"Error: {str(e)}")
   else:
