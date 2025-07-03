@@ -192,6 +192,8 @@ def main():
             chain = get_qa_chain(model_provider, model, api_key)
             output = chain({"input_documents": docs, "question": question}, return_only_outputs=True)["output_text"]
             st.markdown(output)
+            pdf_names = [f.name for f in st.session_state.pdf_files]
+            st.session_state.chat_history.append((question, output, model_provider, model, pdf_names, datetime.now()))
           except Exception as e:
             st.error(f"Error: {str(e)}")
   else:
