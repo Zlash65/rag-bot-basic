@@ -94,6 +94,11 @@ def render_uploaded_files():
       for f in pdf_files:
         st.markdown(f"- {f.name}")
 
+def render_download_chat_history():
+  df = pd.DataFrame(st.session_state.chat_history, columns=["Question", "Answer", "Model", "Model Name", "PDF File", "Timestamp"])
+  with st.expander("**📎 Download Chat History:**"):
+    st.sidebar.download_button("📥 Download Chat History", data=df.to_csv(index=False), file_name="chat_history.csv", mime="text/csv")
+
 # ------------------ Main App ------------------ #
 def main():
   st.set_page_config(page_title="RAG PDFBot", layout="centered")
@@ -198,6 +203,9 @@ def main():
             st.error(f"Error: {str(e)}")
   else:
     st.info("📄 Please upload and submit PDFs to start chatting.")
+
+  if st.session_state.chat_history:
+    render_download_chat_history()
 
 if __name__ == "__main__":
   main()
