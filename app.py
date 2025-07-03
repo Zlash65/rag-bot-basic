@@ -4,14 +4,18 @@ import pandas as pd
 import streamlit as st
 from PyPDF2 import PdfReader
 
+from langchain.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.chains.question_answering import load_qa_chain
 
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 
 from langchain_google_genai import (
-  GoogleGenerativeAIEmbeddings
+  GoogleGenerativeAIEmbeddings,
+  ChatGoogleGenerativeAI
 )
+from langchain_groq import ChatGroq
 
 
 # ------------------ Model Configuration ------------------ #
@@ -52,6 +56,29 @@ def get_vectorstore(chunks, provider, api_key):
   store = FAISS.from_texts(chunks, embedding)
   store.save_local(f"./data/{provider.lower()}_vector_store.faiss")
   return store
+
+def load_vectorstore(provider, api_key):
+  embedding = get_embeddings(provider, api_key)
+  return FAISS.load_local(f"./data/{provider.lower()}_vector_store.faiss", embedding, allow_dangerous_deserialization=True)
+
+def get_qa_chain(provider, model, api_key):
+  prompt = PromptTemplate(
+    template="""
+    Answer the question as detailed as possible.
+    If the question cannot be answered using the provided context, please say "I don't know."
+
+    Context:
+    {context}
+
+    Question:
+    {question}?
+
+    Answer:
+    """,
+    input_variables=["context", "question"]
+  )
+  llm = ChatGroq(model=model, api_key=api_key) if provider.lower() == "groq" else ChatGoogleGenerativeAI(model=model, api_key=api_key)
+  return load_qa_chain(llm, chain_type="stuff", prompt=prompt)
 
 def process_and_store_pdfs(pdfs, provider, api_key):
   raw_text = get_pdf_text(pdfs)
@@ -162,6 +189,7 @@ def main():
         with st.spinner("Thinking..."):
           try:
             docs = st.session_state.vector_store.similarity_search(question)
+            chain = get_qa_chain(model_provider, model, api_key)
           except Exception as e:
             st.error(f"Error: {str(e)}")
   else:
