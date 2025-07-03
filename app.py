@@ -155,6 +155,9 @@ def main():
 
   if st.session_state.pdfs_submitted:
     question = st.chat_input("💬 Ask a Question from the PDF Files")
+    if question:
+      with st.chat_message("user"):
+        st.markdown(question)
   else:
     st.info("📄 Please upload and submit PDFs to start chatting.")
 
