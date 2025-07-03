@@ -190,6 +190,7 @@ def main():
           try:
             docs = st.session_state.vector_store.similarity_search(question)
             chain = get_qa_chain(model_provider, model, api_key)
+            output = chain({"input_documents": docs, "question": question}, return_only_outputs=True)["output_text"]
           except Exception as e:
             st.error(f"Error: {str(e)}")
   else:
