@@ -155,6 +155,8 @@ def main():
 
   if st.session_state.pdfs_submitted:
     question = st.chat_input("💬 Ask a Question from the PDF Files")
+  else:
+    st.info("📄 Please upload and submit PDFs to start chatting.")
 
 if __name__ == "__main__":
   main()
