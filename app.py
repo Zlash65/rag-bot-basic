@@ -149,5 +149,9 @@ def main():
     with st.chat_message("ai"):
       st.markdown(a)
 
+  if st.session_state.unsubmitted_files:
+    st.warning("📄 New PDFs uploaded. Please submit before chatting.")
+    return
+
 if __name__ == "__main__":
   main()
